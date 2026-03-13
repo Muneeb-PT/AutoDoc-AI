@@ -32,8 +32,8 @@ const TerminalDemo = () => {
       {/* Title bar */}
       <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-secondary/30">
         <div className="w-3 h-3 rounded-full bg-destructive/60" />
-        <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
-        <div className="w-3 h-3 rounded-full bg-green-500/60" />
+        <div className="w-3 h-3 rounded-full bg-accent/60" />
+        <div className="w-3 h-3 rounded-full bg-primary/40" />
         <span className="ml-3 text-xs font-mono text-muted-foreground">~/projects/autodoc</span>
       </div>
       {/* Content */}
