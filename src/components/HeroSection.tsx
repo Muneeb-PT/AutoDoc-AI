@@ -54,20 +54,20 @@ const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
           >
-            <a
-              href="#pricing"
+            <Link
+              to="/analyze"
               className="group flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3.5 rounded-lg font-semibold text-base hover:opacity-90 transition-all glow-primary"
             >
               Generate Docs
               <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </a>
-            <a
-              href="#how-it-works"
+            </Link>
+            <Link
+              to="/analyze"
               className="flex items-center gap-2 px-8 py-3.5 rounded-lg font-semibold text-base border border-border text-foreground hover:bg-secondary transition-colors"
             >
               <Github size={18} />
               Connect GitHub
-            </a>
+            </Link>
           </motion.div>
 
           {/* Terminal */}
