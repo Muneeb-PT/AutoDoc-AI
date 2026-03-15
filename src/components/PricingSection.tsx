@@ -100,15 +100,16 @@ const PricingSection = () => {
                 ))}
               </ul>
 
-              <button
-                className={`w-full py-3 rounded-lg font-semibold text-sm transition-all ${
+              <Link
+                to={plan.highlighted ? "/payment" : "/auth"}
+                className={`w-full py-3 rounded-lg font-semibold text-sm transition-all text-center block ${
                   plan.highlighted
                     ? "bg-primary text-primary-foreground hover:opacity-90 glow-primary"
                     : "border border-border text-foreground hover:bg-secondary"
                 }`}
               >
                 {plan.cta}
-              </button>
+              </Link>
             </motion.div>
           ))}
         </div>

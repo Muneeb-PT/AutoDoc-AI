@@ -13,27 +13,14 @@ serve(async (req) => {
   }
 
   try {
-    const { repo_url: rawUrl } = await req.json();
-    if (!rawUrl || typeof rawUrl !== "string") {
-      return new Response(
-        JSON.stringify({ error: "repo_url is required" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
+    const body = await req.json();
+    const { repo_url: rawUrl, file_content, project_name } = body;
 
-    // Normalize: trim whitespace, remove trailing slashes/".git"
-    let repo_url = rawUrl.trim().replace(/\/+$/, "").replace(/\.git$/, "");
-    // Add https:// if missing
-    if (/^(github\.com|gitlab\.com|bitbucket\.org)/i.test(repo_url)) {
-      repo_url = "https://" + repo_url;
-    }
+    const isFileMode = !!file_content;
 
-    // Validate it looks like a GitHub URL
-    const urlPattern = /^https?:\/\/(github\.com|gitlab\.com|bitbucket\.org)\/.+\/.+/i;
-    if (!urlPattern.test(repo_url)) {
-      console.error("URL validation failed for:", repo_url);
+    if (!isFileMode && (!rawUrl || typeof rawUrl !== "string")) {
       return new Response(
-        JSON.stringify({ error: "Please provide a valid GitHub, GitLab, or Bitbucket repository URL" }),
+        JSON.stringify({ error: "repo_url or file_content is required" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
@@ -48,19 +35,53 @@ serve(async (req) => {
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
+    let repoName = project_name || "Project";
+    let repoUrl = "";
+
+    if (!isFileMode) {
+      // Normalize URL
+      repoUrl = rawUrl.trim().replace(/\/+$/, "").replace(/\.git$/, "");
+      if (!/^https?:\/\//i.test(repoUrl)) {
+        repoUrl = "https://" + repoUrl;
+      }
+
+      // Accept any valid URL (GitHub, GitLab, Bitbucket, GitHub Pages, etc.)
+      try {
+        new URL(repoUrl);
+      } catch {
+        return new Response(
+          JSON.stringify({ error: "Please provide a valid URL" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      repoName = repoUrl.split("/").filter(Boolean).slice(-2).join("/");
+    }
+
     // Create the job
     const { data: job, error: insertError } = await supabase
       .from("analysis_jobs")
-      .insert({ repo_url, status: "processing" })
+      .insert({ repo_url: repoUrl || `local://${repoName}`, status: "processing" })
       .select()
       .single();
 
     if (insertError) throw new Error(`DB insert failed: ${insertError.message}`);
 
-    // Extract repo name for context
-    const repoName = repo_url.split("/").slice(-2).join("/");
+    // Build the AI prompt
+    const userContent = isFileMode
+      ? `Generate comprehensive documentation for this local project named "${repoName}".
 
-    // Call Lovable AI to generate documentation
+Here are the project files:
+
+${file_content.substring(0, 50000)}
+
+Please create a complete, production-ready README.md with all sections including architecture diagrams in Mermaid.js format.`
+      : `Generate comprehensive documentation for this repository: ${repoUrl}
+
+Repository: ${repoName}
+
+Please create a complete, production-ready README.md with all sections including architecture diagrams in Mermaid.js format.`;
+
     const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -75,7 +96,7 @@ serve(async (req) => {
             content: `You are AutoDoc AI, a Senior Software Architect and Documentation Expert. 
 You generate world-class, comprehensive documentation for code repositories.
 
-When given a repository URL, generate a complete README.md that includes:
+When given a repository URL or file contents, generate a complete README.md that includes:
 1. **Project Overview** - What the project does, its purpose and value proposition
 2. **Architecture** - High-level system architecture with component descriptions
 3. **Installation** - Step-by-step setup instructions
@@ -87,16 +108,9 @@ When given a repository URL, generate a complete README.md that includes:
 
 Use proper Markdown formatting. Make the documentation professional, detailed, and production-ready.
 Include realistic Mermaid.js diagrams using \`\`\`mermaid code blocks.
-Base your documentation on the repository name and common patterns for that type of project.`,
+Base your documentation on the repository name, URL patterns, and any provided file contents.`,
           },
-          {
-            role: "user",
-            content: `Generate comprehensive documentation for this repository: ${repo_url}
-
-Repository: ${repoName}
-
-Please create a complete, production-ready README.md with all sections including architecture diagrams in Mermaid.js format.`,
-          },
+          { role: "user", content: userContent },
         ],
       }),
     });
@@ -106,24 +120,14 @@ Please create a complete, production-ready README.md with all sections including
       console.error("AI Gateway error:", aiResponse.status, errorText);
 
       if (aiResponse.status === 429) {
-        await supabase
-          .from("analysis_jobs")
-          .update({ status: "failed", error_message: "Rate limit exceeded. Please try again later." })
-          .eq("id", job.id);
-        return new Response(
-          JSON.stringify({ error: "Rate limit exceeded. Please try again later.", job_id: job.id }),
-          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
+        await supabase.from("analysis_jobs").update({ status: "failed", error_message: "Rate limit exceeded." }).eq("id", job.id);
+        return new Response(JSON.stringify({ error: "Rate limit exceeded. Please try again later.", job_id: job.id }),
+          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
       if (aiResponse.status === 402) {
-        await supabase
-          .from("analysis_jobs")
-          .update({ status: "failed", error_message: "AI credits exhausted." })
-          .eq("id", job.id);
-        return new Response(
-          JSON.stringify({ error: "AI credits exhausted. Please add funds.", job_id: job.id }),
-          { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
+        await supabase.from("analysis_jobs").update({ status: "failed", error_message: "AI credits exhausted." }).eq("id", job.id);
+        return new Response(JSON.stringify({ error: "AI credits exhausted.", job_id: job.id }),
+          { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
 
       throw new Error(`AI gateway error: ${aiResponse.status}`);
@@ -132,11 +136,7 @@ Please create a complete, production-ready README.md with all sections including
     const aiData = await aiResponse.json();
     const markdown = aiData.choices?.[0]?.message?.content || "Documentation generation failed.";
 
-    // Update job with result
-    await supabase
-      .from("analysis_jobs")
-      .update({ status: "completed", result_markdown: markdown })
-      .eq("id", job.id);
+    await supabase.from("analysis_jobs").update({ status: "completed", result_markdown: markdown }).eq("id", job.id);
 
     return new Response(
       JSON.stringify({ job_id: job.id, status: "completed", result: markdown }),
