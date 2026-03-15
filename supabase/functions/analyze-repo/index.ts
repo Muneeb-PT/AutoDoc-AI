@@ -13,17 +13,25 @@ serve(async (req) => {
   }
 
   try {
-    const { repo_url } = await req.json();
-    if (!repo_url || typeof repo_url !== "string") {
+    const { repo_url: rawUrl } = await req.json();
+    if (!rawUrl || typeof rawUrl !== "string") {
       return new Response(
         JSON.stringify({ error: "repo_url is required" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
+    // Normalize: trim whitespace, remove trailing slashes/".git"
+    let repo_url = rawUrl.trim().replace(/\/+$/, "").replace(/\.git$/, "");
+    // Add https:// if missing
+    if (/^(github\.com|gitlab\.com|bitbucket\.org)/i.test(repo_url)) {
+      repo_url = "https://" + repo_url;
+    }
+
     // Validate it looks like a GitHub URL
-    const urlPattern = /^https?:\/\/(github\.com|gitlab\.com|bitbucket\.org)\/.+\/.+/;
+    const urlPattern = /^https?:\/\/(github\.com|gitlab\.com|bitbucket\.org)\/.+\/.+/i;
     if (!urlPattern.test(repo_url)) {
+      console.error("URL validation failed for:", repo_url);
       return new Response(
         JSON.stringify({ error: "Please provide a valid GitHub, GitLab, or Bitbucket repository URL" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
