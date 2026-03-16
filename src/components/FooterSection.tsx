@@ -1,7 +1,24 @@
+import { Link } from "react-router-dom";
+
 const footerLinks = {
-  Product: ["Features", "Integrations", "Pricing", "Changelog"],
-  Resources: ["Documentation", "API Reference", "Blog", "Community"],
-  Company: ["About", "Careers", "Privacy Policy", "Terms of Service"],
+  Product: [
+    { label: "Features", href: "#features" },
+    { label: "How It Works", href: "#how-it-works" },
+    { label: "Pricing", href: "#pricing" },
+    { label: "Analyze", href: "/analyze" },
+  ],
+  Resources: [
+    { label: "Documentation", href: "#" },
+    { label: "API Reference", href: "#" },
+    { label: "Templates", href: "#" },
+    { label: "Changelog", href: "#" },
+  ],
+  Company: [
+    { label: "About", href: "#" },
+    { label: "Contact", href: "mailto:mohammedmuneebptcsa@gmail.com" },
+    { label: "Privacy Policy", href: "#" },
+    { label: "Terms of Service", href: "#" },
+  ],
 };
 
 const FooterSection = () => {
@@ -11,15 +28,13 @@ const FooterSection = () => {
         <div className="grid md:grid-cols-4 gap-12">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center glow-border">
-                <span className="font-mono font-bold text-primary text-sm">A</span>
-              </div>
+              <img src="/logo.png" alt="AutoDoc AI" className="w-8 h-8" />
               <span className="font-bold text-lg text-foreground">
                 AutoDoc <span className="text-primary">AI</span>
               </span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Automating software documentation for modern engineering teams worldwide.
+              AI-powered codebase intelligence and automated documentation for modern engineering teams.
             </p>
           </div>
 
@@ -28,10 +43,16 @@ const FooterSection = () => {
               <h4 className="font-semibold text-foreground mb-4">{title}</h4>
               <ul className="space-y-2.5">
                 {links.map((link) => (
-                  <li key={link}>
-                    <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                      {link}
-                    </a>
+                  <li key={link.label}>
+                    {link.href.startsWith("/") ? (
+                      <Link to={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                        {link.label}
+                      </Link>
+                    ) : (
+                      <a href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                        {link.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -44,12 +65,8 @@ const FooterSection = () => {
             © 2026 AutoDoc AI. Developed by Mohammed Muneeb PT.
           </p>
           <div className="flex items-center gap-6">
-            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-              Privacy
-            </a>
-            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-              Terms
-            </a>
+            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Privacy</a>
+            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Terms</a>
           </div>
         </div>
       </div>
