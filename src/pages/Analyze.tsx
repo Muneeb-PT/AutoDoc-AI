@@ -1,13 +1,24 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, Copy, Download, Loader2, Github, CheckCircle2, AlertCircle, Upload, FolderOpen, LogOut } from "lucide-react";
+import { ArrowLeft, Copy, Download, Loader2, Github, CheckCircle2, AlertCircle, Upload, FolderOpen, LogOut, Eye, Code } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
+import MarkdownRenderer from "@/components/MarkdownRenderer";
 
 type JobStatus = "idle" | "processing" | "completed" | "failed";
 type InputMode = "url" | "file";
+type ViewMode = "preview" | "raw";
+
+const progressSteps = [
+  "Connecting to repository...",
+  "Scanning files & structure...",
+  "Building dependency graph...",
+  "Analyzing code patterns...",
+  "Detecting architecture...",
+  "Generating documentation via AI...",
+];
 
 const AnalyzePage = () => {
   const { user, loading: authLoading, signOut } = useAuth();
@@ -18,12 +29,21 @@ const AnalyzePage = () => {
   const [error, setError] = useState<string>("");
   const [inputMode, setInputMode] = useState<InputMode>("url");
   const [files, setFiles] = useState<File[]>([]);
+  const [viewMode, setViewMode] = useState<ViewMode>("preview");
+  const [progressIndex, setProgressIndex] = useState(0);
 
   useEffect(() => {
-    if (!authLoading && !user) {
-      navigate("/auth");
-    }
+    if (!authLoading && !user) navigate("/auth");
   }, [user, authLoading, navigate]);
+
+  useEffect(() => {
+    if (status !== "processing") return;
+    setProgressIndex(0);
+    const interval = setInterval(() => {
+      setProgressIndex((prev) => (prev < progressSteps.length - 1 ? prev + 1 : prev));
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [status]);
 
   const readFilesContent = async (fileList: File[]): Promise<string> => {
     const contents: string[] = [];
@@ -81,21 +101,31 @@ const AnalyzePage = () => {
     toast.success("Copied to clipboard!");
   };
 
-  const handleDownload = () => {
-    const blob = new Blob([result], { type: "text/markdown" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "README.md";
-    a.click();
-    URL.revokeObjectURL(url);
-    toast.success("README.md downloaded!");
+  const handleDownload = (format: "md" | "html") => {
+    if (format === "md") {
+      const blob = new Blob([result], { type: "text/markdown" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "README.md";
+      a.click();
+      URL.revokeObjectURL(url);
+      toast.success("README.md downloaded!");
+    } else {
+      const htmlContent = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Documentation</title><style>body{font-family:system-ui,sans-serif;max-width:800px;margin:0 auto;padding:2rem;line-height:1.6;color:#e2e8f0;background:#0a0e1a}a{color:#22d3ee}pre{background:#1e293b;padding:1rem;border-radius:8px;overflow-x:auto}code{background:#1e293b;padding:2px 6px;border-radius:4px}h1,h2,h3{color:#f1f5f9}</style></head><body><pre>${result.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</pre></body></html>`;
+      const blob = new Blob([htmlContent], { type: "text/html" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "documentation.html";
+      a.click();
+      URL.revokeObjectURL(url);
+      toast.success("HTML documentation downloaded!");
+    }
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFiles(Array.from(e.target.files));
-    }
+    if (e.target.files) setFiles(Array.from(e.target.files));
   };
 
   if (authLoading) {
@@ -113,19 +143,17 @@ const AnalyzePage = () => {
         <div className="container mx-auto px-6 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft size={18} />
-            <span className="text-sm">Back to Home</span>
+            <span className="text-sm">Back</span>
           </Link>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <img src="/logo.png" alt="AutoDoc AI" className="w-8 h-8" />
-              <span className="font-bold text-foreground">
-                AutoDoc <span className="text-primary">AI</span>
-              </span>
-            </div>
-            <button onClick={signOut} className="text-muted-foreground hover:text-foreground transition-colors" title="Sign out">
-              <LogOut size={18} />
-            </button>
+          <div className="flex items-center gap-2">
+            <img src="/logo.png" alt="AutoDoc AI" className="w-8 h-8" />
+            <span className="font-bold text-foreground">
+              AutoDoc <span className="text-primary">AI</span>
+            </span>
           </div>
+          <button onClick={signOut} className="text-muted-foreground hover:text-foreground transition-colors" title="Sign out">
+            <LogOut size={18} />
+          </button>
         </div>
       </div>
 
@@ -134,7 +162,7 @@ const AnalyzePage = () => {
           <h1 className="text-3xl md:text-4xl font-bold mb-3">
             Generate <span className="text-gradient-primary">Documentation</span>
           </h1>
-          <p className="text-muted-foreground">Paste a URL or upload local files to generate docs.</p>
+          <p className="text-muted-foreground">Paste a URL or upload local files to generate comprehensive docs.</p>
         </motion.div>
 
         {/* Input Mode Toggle */}
@@ -166,7 +194,7 @@ const AnalyzePage = () => {
                   type="url"
                   value={repoUrl}
                   onChange={(e) => setRepoUrl(e.target.value)}
-                  placeholder="https://github.com/username/repository or any URL"
+                  placeholder="https://github.com/username/repo or any URL"
                   className="w-full pl-12 pr-4 py-3.5 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 font-mono text-sm"
                   disabled={status === "processing"}
                   onKeyDown={(e) => e.key === "Enter" && handleAnalyze()}
@@ -203,12 +231,29 @@ const AnalyzePage = () => {
           )}
         </motion.div>
 
-        {/* Processing State */}
+        {/* Processing with progress steps */}
         {status === "processing" && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-16">
-            <Loader2 size={40} className="animate-spin text-primary mx-auto mb-4" />
-            <p className="text-foreground font-semibold mb-1">Analyzing {inputMode === "url" ? "repository" : "files"}...</p>
-            <p className="text-sm text-muted-foreground">Parsing code, building AST, generating documentation via AI</p>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="rounded-xl border border-border bg-card p-8">
+            <div className="text-center mb-6">
+              <Loader2 size={40} className="animate-spin text-primary mx-auto mb-4" />
+              <p className="text-foreground font-semibold">Analyzing {inputMode === "url" ? "repository" : "files"}...</p>
+            </div>
+            <div className="max-w-md mx-auto space-y-3">
+              {progressSteps.map((step, i) => (
+                <div key={step} className={`flex items-center gap-3 text-sm transition-all duration-500 ${
+                  i < progressIndex ? "text-primary" : i === progressIndex ? "text-foreground" : "text-muted-foreground/40"
+                }`}>
+                  {i < progressIndex ? (
+                    <CheckCircle2 size={16} className="text-primary shrink-0" />
+                  ) : i === progressIndex ? (
+                    <Loader2 size={16} className="animate-spin shrink-0" />
+                  ) : (
+                    <div className="w-4 h-4 rounded-full border border-border shrink-0" />
+                  )}
+                  {step}
+                </div>
+              ))}
+            </div>
           </motion.div>
         )}
 
@@ -225,17 +270,39 @@ const AnalyzePage = () => {
         {/* Result */}
         {status === "completed" && result && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
               <div className="flex items-center gap-2 text-primary">
                 <CheckCircle2 size={18} />
                 <span className="text-sm font-semibold">Documentation Generated</span>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 flex-wrap">
+                {/* View toggle */}
+                <div className="flex rounded-lg border border-border overflow-hidden">
+                  <button
+                    onClick={() => setViewMode("preview")}
+                    className={`flex items-center gap-1.5 px-3 py-2 text-sm transition-colors ${
+                      viewMode === "preview" ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-secondary"
+                    }`}
+                  >
+                    <Eye size={14} /> Preview
+                  </button>
+                  <button
+                    onClick={() => setViewMode("raw")}
+                    className={`flex items-center gap-1.5 px-3 py-2 text-sm transition-colors ${
+                      viewMode === "raw" ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-secondary"
+                    }`}
+                  >
+                    <Code size={14} /> Raw
+                  </button>
+                </div>
                 <button onClick={handleCopy} className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-foreground hover:bg-secondary transition-colors text-sm">
                   <Copy size={14} /> Copy
                 </button>
-                <button onClick={handleDownload} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-all text-sm">
-                  <Download size={14} /> Download .md
+                <button onClick={() => handleDownload("md")} className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-foreground hover:bg-secondary transition-colors text-sm">
+                  <Download size={14} /> .md
+                </button>
+                <button onClick={() => handleDownload("html")} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-all text-sm">
+                  <Download size={14} /> .html
                 </button>
               </div>
             </div>
@@ -246,7 +313,13 @@ const AnalyzePage = () => {
                 <div className="w-3 h-3 rounded-full bg-primary/40" />
                 <span className="ml-2 text-xs font-mono text-muted-foreground">README.md</span>
               </div>
-              <pre className="p-6 overflow-x-auto text-sm font-mono text-foreground whitespace-pre-wrap leading-relaxed max-h-[600px] overflow-y-auto">{result}</pre>
+              <div className="p-6 overflow-x-auto max-h-[700px] overflow-y-auto">
+                {viewMode === "preview" ? (
+                  <MarkdownRenderer content={result} />
+                ) : (
+                  <pre className="text-sm font-mono text-foreground whitespace-pre-wrap leading-relaxed">{result}</pre>
+                )}
+              </div>
             </div>
           </motion.div>
         )}

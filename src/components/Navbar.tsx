@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -12,7 +12,7 @@ const navLinks = [
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { user, signOut } = useAuth();
+  const { user, isAdmin, signOut } = useAuth();
 
   return (
     <motion.nav
@@ -31,11 +31,7 @@ const Navbar = () => {
 
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
+            <a key={link.label} href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               {link.label}
             </a>
           ))}
@@ -44,41 +40,31 @@ const Navbar = () => {
         <div className="hidden md:flex items-center gap-3">
           {user ? (
             <>
-              <Link
-                to="/analyze"
-                className="text-sm font-medium bg-primary text-primary-foreground px-5 py-2 rounded-lg hover:opacity-90 transition-opacity"
-              >
+              {isAdmin && (
+                <Link to="/admin" className="text-sm text-muted-foreground hover:text-foreground transition-colors px-3 py-2 flex items-center gap-1.5">
+                  <Shield size={14} /> Admin
+                </Link>
+              )}
+              <Link to="/analyze" className="text-sm font-medium bg-primary text-primary-foreground px-5 py-2 rounded-lg hover:opacity-90 transition-opacity">
                 Dashboard
               </Link>
-              <button
-                onClick={signOut}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors px-4 py-2"
-              >
+              <button onClick={signOut} className="text-sm text-muted-foreground hover:text-foreground transition-colors px-4 py-2">
                 Sign Out
               </button>
             </>
           ) : (
             <>
-              <Link
-                to="/auth"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors px-4 py-2"
-              >
+              <Link to="/auth" className="text-sm text-muted-foreground hover:text-foreground transition-colors px-4 py-2">
                 Sign In
               </Link>
-              <Link
-                to="/auth"
-                className="text-sm font-medium bg-primary text-primary-foreground px-5 py-2 rounded-lg hover:opacity-90 transition-opacity"
-              >
+              <Link to="/auth" className="text-sm font-medium bg-primary text-primary-foreground px-5 py-2 rounded-lg hover:opacity-90 transition-opacity">
                 Get Started Free
               </Link>
             </>
           )}
         </div>
 
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden text-foreground"
-        >
+        <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden text-foreground">
           {mobileOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
@@ -93,21 +79,23 @@ const Navbar = () => {
           >
             <div className="flex flex-col p-6 gap-4">
               {navLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
+                <a key={link.label} href={link.href} onClick={() => setMobileOpen(false)} className="text-muted-foreground hover:text-foreground transition-colors">
                   {link.label}
                 </a>
               ))}
               {user ? (
-                <Link to="/analyze" className="mt-2 text-center font-medium bg-primary text-primary-foreground px-5 py-2.5 rounded-lg">
-                  Dashboard
-                </Link>
+                <>
+                  {isAdmin && (
+                    <Link to="/admin" onClick={() => setMobileOpen(false)} className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2">
+                      <Shield size={14} /> Admin Panel
+                    </Link>
+                  )}
+                  <Link to="/analyze" onClick={() => setMobileOpen(false)} className="mt-2 text-center font-medium bg-primary text-primary-foreground px-5 py-2.5 rounded-lg">
+                    Dashboard
+                  </Link>
+                </>
               ) : (
-                <Link to="/auth" className="mt-2 text-center font-medium bg-primary text-primary-foreground px-5 py-2.5 rounded-lg">
+                <Link to="/auth" onClick={() => setMobileOpen(false)} className="mt-2 text-center font-medium bg-primary text-primary-foreground px-5 py-2.5 rounded-lg">
                   Get Started Free
                 </Link>
               )}

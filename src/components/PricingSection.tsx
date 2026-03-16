@@ -4,12 +4,19 @@ import { Link } from "react-router-dom";
 
 const plans = [
   {
-    name: "Hobby",
+    name: "Free",
     price: "$0",
     period: "/mo",
     description: "For individual developers exploring AutoDoc.",
-    features: ["1 GitHub Repository", "Basic README Generation", "Community Support", "5 Generations / Month"],
+    features: [
+      "Public repositories only",
+      "Basic README generation",
+      "5 analyses / month",
+      "Community support",
+      "Watermark on exports",
+    ],
     cta: "Get Started",
+    href: "/auth",
     highlighted: false,
   },
   {
@@ -18,14 +25,18 @@ const plans = [
     period: "/mo",
     description: "For teams shipping fast and documenting everything.",
     features: [
-      "Unlimited Private Repos",
-      "Full API & Architecture Docs",
-      "CI/CD Webhook Sync",
-      "Priority Email Support",
-      "Custom Templates",
-      "Mermaid Diagram Export",
+      "Unlimited private repos",
+      "Full architecture analysis",
+      "Dependency graph generation",
+      "API documentation",
+      "PDF & HTML export",
+      "PR documentation",
+      "Mermaid diagram export",
+      "Priority support",
+      "No watermark",
     ],
     cta: "Upgrade to Pro",
+    href: "/payment",
     highlighted: true,
   },
   {
@@ -34,14 +45,16 @@ const plans = [
     period: "",
     description: "For organizations with compliance and scale needs.",
     features: [
-      "SOC2 Compliance",
-      "Private VPC Deployment",
-      "Custom Fine-Tuned Models",
-      "Dedicated Success Manager",
-      "SLA Guarantee",
-      "SSO & RBAC",
+      "Everything in Pro",
+      "Custom documentation templates",
+      "CI/CD webhook integration",
+      "Team management & SSO",
+      "Custom AI model fine-tuning",
+      "Dedicated success manager",
+      "SLA guarantee",
     ],
     cta: "Contact Sales",
+    href: "mailto:mohammedmuneebptcsa@gmail.com",
     highlighted: false,
   },
 ];
@@ -61,7 +74,7 @@ const PricingSection = () => {
           <h2 className="text-4xl md:text-5xl font-bold mt-3 mb-4">
             Simple, transparent <span className="text-gradient-primary">pricing</span>
           </h2>
-          <p className="text-muted-foreground">Start for free, upgrade when you need scale.</p>
+          <p className="text-muted-foreground">Start free. Upgrade when you need full codebase intelligence.</p>
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -101,7 +114,7 @@ const PricingSection = () => {
               </ul>
 
               <Link
-                to={plan.highlighted ? "/payment" : "/auth"}
+                to={plan.href}
                 className={`w-full py-3 rounded-lg font-semibold text-sm transition-all text-center block ${
                   plan.highlighted
                     ? "bg-primary text-primary-foreground hover:opacity-90 glow-primary"
