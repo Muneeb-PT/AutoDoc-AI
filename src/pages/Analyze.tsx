@@ -1,11 +1,16 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, Copy, Download, Loader2, Github, CheckCircle2, AlertCircle, Upload, FolderOpen, LogOut, Eye, Code } from "lucide-react";
+import {
+  ArrowLeft, Copy, Download, Loader2, Github, CheckCircle2, AlertCircle,
+  Upload, FolderOpen, LogOut, Eye, Code, Palette, Share2, History,
+} from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
+import ExportTemplateModal from "@/components/ExportTemplateModal";
+import DocStatsBar from "@/components/DocStatsBar";
 
 type JobStatus = "idle" | "processing" | "completed" | "failed";
 type InputMode = "url" | "file";
@@ -31,6 +36,7 @@ const AnalyzePage = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [viewMode, setViewMode] = useState<ViewMode>("preview");
   const [progressIndex, setProgressIndex] = useState(0);
+  const [showTemplateModal, setShowTemplateModal] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !user) navigate("/auth");
@@ -101,6 +107,17 @@ const AnalyzePage = () => {
     toast.success("Copied to clipboard!");
   };
 
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: "AutoDoc AI Documentation", text: result.slice(0, 200) + "..." });
+      } catch { /* cancelled */ }
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      toast.success("Link copied!");
+    }
+  };
+
   const handleDownload = (format: "md" | "html") => {
     if (format === "md") {
       const blob = new Blob([result], { type: "text/markdown" });
@@ -112,15 +129,7 @@ const AnalyzePage = () => {
       URL.revokeObjectURL(url);
       toast.success("README.md downloaded!");
     } else {
-      const htmlContent = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Documentation</title><style>body{font-family:system-ui,sans-serif;max-width:800px;margin:0 auto;padding:2rem;line-height:1.6;color:#e2e8f0;background:#0a0e1a}a{color:#22d3ee}pre{background:#1e293b;padding:1rem;border-radius:8px;overflow-x:auto}code{background:#1e293b;padding:2px 6px;border-radius:4px}h1,h2,h3{color:#f1f5f9}</style></head><body><pre>${result.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</pre></body></html>`;
-      const blob = new Blob([htmlContent], { type: "text/html" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "documentation.html";
-      a.click();
-      URL.revokeObjectURL(url);
-      toast.success("HTML documentation downloaded!");
+      setShowTemplateModal(true);
     }
   };
 
@@ -151,9 +160,14 @@ const AnalyzePage = () => {
               AutoDoc <span className="text-primary">AI</span>
             </span>
           </div>
-          <button onClick={signOut} className="text-muted-foreground hover:text-foreground transition-colors" title="Sign out">
-            <LogOut size={18} />
-          </button>
+          <div className="flex items-center gap-3">
+            <Link to="/history" className="text-muted-foreground hover:text-foreground transition-colors" title="History">
+              <History size={18} />
+            </Link>
+            <button onClick={signOut} className="text-muted-foreground hover:text-foreground transition-colors" title="Sign out">
+              <LogOut size={18} />
+            </button>
+          </div>
         </div>
       </div>
 
@@ -231,7 +245,7 @@ const AnalyzePage = () => {
           )}
         </motion.div>
 
-        {/* Processing with progress steps */}
+        {/* Processing */}
         {status === "processing" && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="rounded-xl border border-border bg-card p-8">
             <div className="text-center mb-6">
@@ -257,7 +271,7 @@ const AnalyzePage = () => {
           </motion.div>
         )}
 
-        {/* Error State */}
+        {/* Error */}
         {status === "failed" && (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl border border-destructive/30 bg-destructive/5 p-6 text-center">
             <AlertCircle size={32} className="text-destructive mx-auto mb-3" />
@@ -270,6 +284,9 @@ const AnalyzePage = () => {
         {/* Result */}
         {status === "completed" && result && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            {/* Stats bar */}
+            <DocStatsBar content={result} />
+
             <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
               <div className="flex items-center gap-2 text-primary">
                 <CheckCircle2 size={18} />
@@ -298,11 +315,14 @@ const AnalyzePage = () => {
                 <button onClick={handleCopy} className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-foreground hover:bg-secondary transition-colors text-sm">
                   <Copy size={14} /> Copy
                 </button>
+                <button onClick={handleShare} className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-foreground hover:bg-secondary transition-colors text-sm">
+                  <Share2 size={14} /> Share
+                </button>
                 <button onClick={() => handleDownload("md")} className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-foreground hover:bg-secondary transition-colors text-sm">
                   <Download size={14} /> .md
                 </button>
-                <button onClick={() => handleDownload("html")} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-all text-sm">
-                  <Download size={14} /> .html
+                <button onClick={() => setShowTemplateModal(true)} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-all text-sm glow-primary">
+                  <Palette size={14} /> Templates
                 </button>
               </div>
             </div>
@@ -324,6 +344,13 @@ const AnalyzePage = () => {
           </motion.div>
         )}
       </div>
+
+      {/* Template Export Modal */}
+      <ExportTemplateModal
+        open={showTemplateModal}
+        onClose={() => setShowTemplateModal(false)}
+        content={result}
+      />
     </div>
   );
 };
