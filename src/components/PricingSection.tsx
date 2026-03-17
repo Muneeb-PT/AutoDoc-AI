@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { Check, X, Crown, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const plans = [
@@ -9,15 +9,21 @@ const plans = [
     period: "/mo",
     description: "For individual developers exploring AutoDoc.",
     features: [
-      "Public repositories only",
-      "Basic README generation",
-      "5 analyses / month",
-      "Community support",
-      "Watermark on exports",
+      { text: "Public repositories only", included: true },
+      { text: "5 analyses / month", included: true },
+      { text: "Markdown export", included: true },
+      { text: "Minimal & Open Source templates", included: true },
+      { text: "Community support", included: true },
+      { text: "Watermark on exports", included: true },
+      { text: "Architecture diagrams", included: false },
+      { text: "Code Q&A chat", included: false },
+      { text: "Pro templates", included: false },
     ],
-    cta: "Get Started",
+    cta: "Get Started Free",
     href: "/auth",
     highlighted: false,
+    badge: null,
+    icon: null,
   },
   {
     name: "Pro",
@@ -25,37 +31,45 @@ const plans = [
     period: "/mo",
     description: "For teams shipping fast and documenting everything.",
     features: [
-      "Unlimited private repos",
-      "Full architecture analysis",
-      "Dependency graph generation",
-      "API documentation",
-      "PDF & HTML export",
-      "PR documentation",
-      "Mermaid diagram export",
-      "Priority support",
-      "No watermark",
+      { text: "Unlimited private repos", included: true },
+      { text: "Unlimited analyses", included: true },
+      { text: "All 6 professional templates", included: true },
+      { text: "Architecture intelligence", included: true },
+      { text: "Mermaid diagram generation", included: true },
+      { text: "Code Q&A chat", included: true },
+      { text: "PR documentation", included: true },
+      { text: "Doc versioning & history", included: true },
+      { text: "PDF + HTML + Markdown export", included: true },
+      { text: "No watermark", included: true },
+      { text: "Priority support", included: true },
     ],
     cta: "Upgrade to Pro",
     href: "/payment",
     highlighted: true,
+    badge: "MOST POPULAR",
+    icon: Zap,
   },
   {
     name: "Enterprise",
     price: "Custom",
     period: "",
-    description: "For organizations with compliance and scale needs.",
+    description: "For orgs with compliance, scale, and custom needs.",
     features: [
-      "Everything in Pro",
-      "Custom documentation templates",
-      "CI/CD webhook integration",
-      "Team management & SSO",
-      "Custom AI model fine-tuning",
-      "Dedicated success manager",
-      "SLA guarantee",
+      { text: "Everything in Pro", included: true },
+      { text: "Custom branded templates", included: true },
+      { text: "CI/CD webhook integration", included: true },
+      { text: "Doc website generator", included: true },
+      { text: "Team management & SSO", included: true },
+      { text: "Custom AI model fine-tuning", included: true },
+      { text: "Dedicated success manager", included: true },
+      { text: "SLA guarantee", included: true },
+      { text: "On-premise deployment", included: true },
     ],
     cta: "Contact Sales",
     href: "mailto:mohammedmuneebptcsa@gmail.com",
     highlighted: false,
+    badge: null,
+    icon: Crown,
   },
 ];
 
@@ -91,13 +105,16 @@ const PricingSection = () => {
                   : "border-border bg-card"
               }`}
             >
-              {plan.highlighted && (
+              {plan.badge && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-primary text-primary-foreground text-xs font-semibold rounded-full">
-                  MOST POPULAR
+                  {plan.badge}
                 </div>
               )}
 
-              <h3 className="text-xl font-bold text-foreground">{plan.name}</h3>
+              <div className="flex items-center gap-2">
+                {plan.icon && <plan.icon size={18} className="text-primary" />}
+                <h3 className="text-xl font-bold text-foreground">{plan.name}</h3>
+              </div>
               <div className="mt-4 mb-2">
                 <span className="text-4xl font-bold text-foreground">{plan.price}</span>
                 <span className="text-muted-foreground text-sm">{plan.period}</span>
@@ -106,9 +123,13 @@ const PricingSection = () => {
 
               <ul className="space-y-3 mb-8 flex-1">
                 {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-center gap-3 text-sm text-foreground">
-                    <Check size={16} className="text-primary shrink-0" />
-                    {feature}
+                  <li key={feature.text} className={`flex items-center gap-3 text-sm ${feature.included ? "text-foreground" : "text-muted-foreground/50 line-through"}`}>
+                    {feature.included ? (
+                      <Check size={16} className="text-primary shrink-0" />
+                    ) : (
+                      <X size={16} className="shrink-0" />
+                    )}
+                    {feature.text}
                   </li>
                 ))}
               </ul>
@@ -126,6 +147,16 @@ const PricingSection = () => {
             </motion.div>
           ))}
         </div>
+
+        {/* Comparison note */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="text-center text-xs text-muted-foreground mt-8"
+        >
+          All plans include secure auth, encrypted analysis, and GDPR compliance. Cancel anytime.
+        </motion.p>
       </div>
     </section>
   );
