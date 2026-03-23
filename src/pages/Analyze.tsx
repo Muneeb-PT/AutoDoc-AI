@@ -387,7 +387,7 @@ table{border-collapse:collapse;width:100%}th,td{border:1px solid #cbd5e1;padding
             {/* Generate Button */}
             <button
               onClick={handleAnalyze}
-              disabled={status === "processing"}
+              disabled={false}
               className="w-full py-4 rounded-xl bg-primary text-primary-foreground font-bold text-lg hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-3 glow-primary"
             >
               Generate Document
