@@ -1,18 +1,27 @@
+import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index.tsx";
-import Analyze from "./pages/Analyze.tsx";
-import Auth from "./pages/Auth.tsx";
-import Payment from "./pages/Payment.tsx";
-import Admin from "./pages/Admin.tsx";
-import History from "./pages/History.tsx";
-import NotFound from "./pages/NotFound.tsx";
+
+const Analyze = lazy(() => import("./pages/Analyze.tsx"));
+const Auth = lazy(() => import("./pages/Auth.tsx"));
+const Payment = lazy(() => import("./pages/Payment.tsx"));
+const Admin = lazy(() => import("./pages/Admin.tsx"));
+const History = lazy(() => import("./pages/History.tsx"));
+const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 const queryClient = new QueryClient();
+
+const PageFallback = () => (
+  <div className="min-h-screen flex items-center justify-center bg-background">
+    <Loader2 size={28} className="animate-spin text-primary" />
+  </div>
+);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -21,16 +30,18 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/analyze" element={<Analyze />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/payment" element={<Payment />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/history" element={<History />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <Suspense fallback={<PageFallback />}>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/analyze" element={<Analyze />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/payment" element={<Payment />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/history" element={<History />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>
