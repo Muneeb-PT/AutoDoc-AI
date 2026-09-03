@@ -1,4 +1,4 @@
-name: Deploy AutoDoc AI
+name: Deploy AutoDoc AI to GitHub Pages
 
 on:
   push:
@@ -34,6 +34,10 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          VITE_SUPABASE_PROJECT_ID: ${{ vars.VITE_SUPABASE_PROJECT_ID }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
