@@ -1,5 +1,5 @@
-import { useState, useRef, useCallback } from "react";
-import { Mic, MicOff, Loader2 } from "lucide-react";
+import { useEffect, useState, useRef, useCallback } from "react";
+import { Mic, MicOff } from "lucide-react";
 import { toast } from "sonner";
 
 interface VoiceInputProps {
@@ -10,6 +10,12 @@ interface VoiceInputProps {
 const VoiceInput = ({ onTranscript, disabled }: VoiceInputProps) => {
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef<any>(null);
+  const [supported, setSupported] = useState(false);
+
+  useEffect(() => {
+    setSupported(Boolean((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition));
+    return () => recognitionRef.current?.stop();
+  }, []);
 
   const toggleListening = useCallback(() => {
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
@@ -57,13 +63,14 @@ const VoiceInput = ({ onTranscript, disabled }: VoiceInputProps) => {
     <button
       type="button"
       onClick={toggleListening}
-      disabled={disabled}
+      disabled={disabled || !supported}
       className={`p-3 rounded-lg border transition-all flex items-center gap-2 text-sm font-medium ${
         isListening
           ? "border-destructive bg-destructive/10 text-destructive animate-pulse"
           : "border-border text-foreground hover:bg-secondary"
       } disabled:opacity-50`}
-      title={isListening ? "Stop listening" : "Voice input"}
+      title={!supported ? "Voice input is not supported by this browser" : isListening ? "Stop listening" : "Voice input"}
+      aria-label={!supported ? "Voice input unavailable" : isListening ? "Stop voice input" : "Start voice input"}
     >
       {isListening ? <MicOff size={16} /> : <Mic size={16} />}
       {isListening ? "Stop" : "Voice"}

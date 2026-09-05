@@ -28,7 +28,7 @@ const FooterSection = () => {
         <div className="grid md:grid-cols-4 gap-12">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <img src="/logo.png" alt="AutoDoc AI" className="w-8 h-8" />
+              <img src={`${import.meta.env.BASE_URL}logo.png`} alt="AutoDoc AI" className="w-8 h-8" />
               <span className="font-bold text-lg text-foreground">
                 AutoDoc <span className="text-primary">AI</span>
               </span>

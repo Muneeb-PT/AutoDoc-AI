@@ -23,7 +23,7 @@ interface AnalysisJob {
 }
 
 const AdminPage = () => {
-  const { user, loading: authLoading, isAdmin, signOut } = useAuth();
+  const { user, loading: authLoading, roleLoading, isAdmin, signOut } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<"users" | "jobs">("users");
   const [users, setUsers] = useState<Profile[]>([]);
@@ -31,11 +31,11 @@ const AdminPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!authLoading && (!user || !isAdmin)) {
+    if (!authLoading && !roleLoading && (!user || !isAdmin)) {
       toast.error("Admin access required");
       navigate("/");
     }
-  }, [user, authLoading, isAdmin, navigate]);
+  }, [user, authLoading, roleLoading, isAdmin, navigate]);
 
   useEffect(() => {
     if (isAdmin) fetchData();
@@ -45,10 +45,12 @@ const AdminPage = () => {
     setLoading(true);
     try {
       if (activeTab === "users") {
-        const { data } = await supabase.from("profiles").select("*").order("created_at", { ascending: false });
+        const { data, error } = await supabase.from("profiles").select("*").order("created_at", { ascending: false }).limit(100);
+        if (error) throw error;
         setUsers(data || []);
       } else {
-        const { data } = await supabase.from("analysis_jobs").select("*").order("created_at", { ascending: false }).limit(100);
+        const { data, error } = await supabase.from("analysis_jobs").select("*").order("created_at", { ascending: false }).limit(100);
+        if (error) throw error;
         setJobs(data || []);
       }
     } catch (e) {
@@ -57,7 +59,7 @@ const AdminPage = () => {
     setLoading(false);
   };
 
-  if (authLoading || !isAdmin) {
+  if (authLoading || roleLoading || !isAdmin) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader2 size={32} className="animate-spin text-primary" />

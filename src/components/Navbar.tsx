@@ -23,7 +23,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex items-center justify-between h-16 px-6">
         <a href="/" className="flex items-center gap-2">
-          <img src="/logo.png" alt="AutoDoc AI" className="w-8 h-8" />
+          <img src={`${import.meta.env.BASE_URL}logo.png`} alt="AutoDoc AI" className="w-8 h-8" />
           <span className="font-bold text-lg text-foreground">
             AutoDoc <span className="text-primary">AI</span>
           </span>
@@ -64,7 +64,7 @@ const Navbar = () => {
           )}
         </div>
 
-        <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden text-foreground">
+        <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden text-foreground" aria-label={mobileOpen ? "Close navigation" : "Open navigation"} aria-expanded={mobileOpen}>
           {mobileOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>

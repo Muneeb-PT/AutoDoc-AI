@@ -18,12 +18,15 @@ const docTypes = [
 
 const DocumentTypeSelector = ({ value, onChange, disabled }: DocumentTypeSelectorProps) => {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2" role="radiogroup" aria-label="Document type">
       {docTypes.map((t) => (
         <button
           key={t.id}
           onClick={() => onChange(t.id)}
           disabled={disabled}
+          type="button"
+          role="radio"
+          aria-checked={value === t.id}
           className={`p-3 rounded-xl border text-center transition-all ${
             value === t.id
               ? "border-primary bg-primary/10 text-primary ring-1 ring-primary/30"
