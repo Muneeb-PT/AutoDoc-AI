@@ -50,7 +50,7 @@ const PaymentPage = () => {
             <span className="text-sm">Back to Home</span>
           </Link>
           <div className="flex items-center gap-2">
-            <img src="/logo.png" alt="AutoDoc AI" className="w-8 h-8" />
+            <img src={`${import.meta.env.BASE_URL}logo.png`} alt="AutoDoc AI" className="w-8 h-8" />
             <span className="font-bold text-foreground">
               AutoDoc <span className="text-primary">AI</span>
             </span>
@@ -67,7 +67,7 @@ const PaymentPage = () => {
           <h1 className="text-3xl md:text-4xl font-bold mb-3">
             Upgrade to <span className="text-gradient-primary">Pro</span>
           </h1>
-          <p className="text-muted-foreground">₹999/month · Unlock unlimited documentation generation</p>
+          <p className="text-muted-foreground">₹999/month · Manual bank-transfer activation</p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-6">
@@ -129,6 +129,7 @@ const PaymentPage = () => {
                 </a>{" "}
                 for activation.
               </p>
+              <p className="mt-3 text-center text-xs text-muted-foreground">Activation is completed manually after the receipt is verified. Do not send passwords or account login details.</p>
             </div>
           </motion.div>
         </div>

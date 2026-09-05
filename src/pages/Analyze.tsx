@@ -227,7 +227,7 @@ table{border-collapse:collapse;width:100%}th,td{border:1px solid #cbd5e1;padding
             <span className="text-sm">Back</span>
           </Link>
           <div className="flex items-center gap-2">
-            <img src="/logo.png" alt="AutoDoc AI" className="w-8 h-8" />
+            <img src={`${import.meta.env.BASE_URL}logo.png`} alt="AutoDoc AI" className="w-8 h-8" />
             <span className="font-bold text-foreground">
               AutoDoc <span className="text-primary">AI</span>
             </span>

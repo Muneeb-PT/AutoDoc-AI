@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, Clock, ExternalLink, Loader2, LogOut, Trash2 } from "lucide-react";
+import { ArrowLeft, Clock, Loader2, LogOut, RefreshCw } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -19,6 +19,7 @@ const HistoryPage = () => {
   const navigate = useNavigate();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
 
   useEffect(() => {
     if (!authLoading && !user) navigate("/auth");
@@ -27,12 +28,19 @@ const HistoryPage = () => {
   useEffect(() => {
     if (!user) return;
     const fetchJobs = async () => {
-      const { data } = await supabase
+      setLoadError("");
+      const { data, error } = await supabase
         .from("analysis_jobs")
         .select("id, repo_url, status, created_at, result_markdown")
+        .eq("user_id", user.id)
         .order("created_at", { ascending: false })
         .limit(50);
-      setJobs(data || []);
+      if (error) {
+        setLoadError("We couldn't load your history. Please try again.");
+        toast.error("History could not be loaded");
+      } else {
+        setJobs(data || []);
+      }
       setLoading(false);
     };
     fetchJobs();
@@ -76,7 +84,14 @@ const HistoryPage = () => {
       <div className="container mx-auto px-6 py-12 max-w-3xl">
         <h1 className="text-2xl font-bold mb-6 text-foreground">Your Analyses</h1>
 
-        {jobs.length === 0 ? (
+        {loadError ? (
+          <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-5 py-8 text-center">
+            <p className="mb-4 text-sm text-muted-foreground">{loadError}</p>
+            <button onClick={() => window.location.reload()} className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-sm text-foreground hover:bg-secondary">
+              <RefreshCw size={14} /> Retry
+            </button>
+          </div>
+        ) : jobs.length === 0 ? (
           <div className="text-center py-16 text-muted-foreground">
             <Clock size={40} className="mx-auto mb-4 opacity-40" />
             <p>No analyses yet. <Link to="/analyze" className="text-primary hover:underline">Start your first one</Link>.</p>
