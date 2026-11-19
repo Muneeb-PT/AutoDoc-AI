@@ -1,109 +1,123 @@
 # 📄 AutoDoc AI — Code to Clarity
 
-> **Turn ideas, code and information into structured documentation with AI.**
+> Turn ideas, files and information into structured documents with AI.
 
-AutoDoc AI is an AI-powered document generation platform developed around a startup idea: simplifying the process of creating technical and professional documents through artificial intelligence.
+AutoDoc AI is an AI-powered document generation platform developed as a startup concept for simplifying the creation of technical and professional documents.
 
-The project explores how AI can reduce the time and effort involved in documentation by transforming user-provided information, project files and repository references into structured documents.
+The project explores how artificial intelligence can help users generate structured documentation from their input, uploaded files and project references.
 
-\<p align="center">   \<a href="[https://autodoc-ai.lovable.app](https://autodoc-ai.lovable.app)">     \<img src="[https://img.shields.io/badge/Live%20Demo-AutoDoc%20AI-8B5CF6?style=for-the-badge](https://img.shields.io/badge/Live%20Demo-AutoDoc%20AI-8B5CF6?style=for-the-badge)" alt="Live Demo">   \</a>   \<img src="[https://img.shields.io/badge/Project-Startup%20Prototype-blue?style=for-the-badge](https://img.shields.io/badge/Project-Startup%20Prototype-blue?style=for-the-badge)" alt="Startup Prototype">   \<img src="[https://img.shields.io/badge/AI%20Assisted-Lovable-4169E1?style=for-the-badge](https://img.shields.io/badge/AI%20Assisted-Lovable-4169E1?style=for-the-badge)" alt="AI Assisted"> \</p>
+<p align="center">
+  <a href="https://autodoc-ai.lovable.app">
+    <img src="https://img.shields.io/badge/Live%20Demo-AutoDoc%20AI-8B5CF6?style=for-the-badge" alt="Live Demo">
+  </a>
+  <img src="https://img.shields.io/badge/Project-Startup%20Prototype-blue?style=for-the-badge" alt="Startup Prototype">
+  <img src="https://img.shields.io/badge/AI%20Assisted-Lovable-4169E1?style=for-the-badge" alt="AI Assisted">
+</p>
 
-\<p align="center">   \<a href="[https://github.com/Muneeb-PT/AutoDoc-AI](https://github.com/Muneeb-PT/AutoDoc-AI)">GitHub Repository\</a> ·   \<a href="[https://autodoc-ai.lovable.app](https://autodoc-ai.lovable.app)">Live Application\</a> ·   \<a href="[https://lovable.dev/projects/53c0d838-3711-4647-99d6-cc0f6677f500](https://lovable.dev/projects/53c0d838-3711-4647-99d6-cc0f6677f500)">Lovable Project\</a> \</p>
+<p align="center">
+  <a href="https://github.com/Muneeb-PT/AutoDoc-AI">GitHub Repository</a>
+  ·
+  <a href="https://autodoc-ai.lovable.app">Live Application</a>
+  ·
+  <a href="https://lovable.dev/projects/53c0d838-3711-4647-99d6-cc0f6677f500">Lovable Project</a>
+</p>
 
 ---
 
 ## 💡 The Startup Idea
 
-Documentation is an essential part of software development, business operations and professional communication. However, creating well-structured documentation can be repetitive, time-consuming and difficult for individuals who are not experienced in technical writing.
+Creating documentation is an important part of software development, business operations and professional communication. However, writing well-structured documents can be repetitive and time-consuming, particularly for beginners.
 
-**AutoDoc AI aims to make document creation faster and more accessible through AI.**
+**AutoDoc AI aims to make document creation faster and more accessible through artificial intelligence.**
 
-The long-term idea is to develop a platform that understands project structure and user-provided information, then generates useful, organized and customizable documentation.
-
-The concept is intended to serve developers, students, startups, software teams and professionals.
+The broader idea is to build a platform that can understand user-provided information and, eventually, software project structures to generate useful and organized documentation.
 
 ## 🎯 Problem & Proposed Solution
 
 ### The Problem
 
-- Writing project documentation takes time.
-- Maintaining consistent documentation across projects can be difficult.
-- Beginners may struggle to structure technical documents.
-- Different professional documents require different formats and writing styles.
+- Creating project documentation takes time.
+- Beginners may struggle to organize technical information.
+- Different documents require different structures and formats.
+- Keeping documentation consistent can be challenging.
 
 ### The Proposed Solution
 
-AutoDoc AI provides an interface where users can supply information through text, files or repository references and request AI-generated documents.
+AutoDoc AI provides a web interface where users can submit text, upload files or provide a repository URL and request an AI-generated document.
 
-The platform aims to make documentation creation more accessible, customizable and efficient.
+The goal is to simplify the document creation process through an accessible interface and customizable generation options.
 
 ## ✨ Current Prototype Features
 
-| Feature                 | Description                                                 |
-| ----------------------- | ----------------------------------------------------------- |
-| AI Document Generation  | Generate structured documents using an AI model.            |
-| Multiple Document Types | README, Resume, Report, Proposal and API Documentation.     |
-| Multiple Input Methods  | Provide text, upload files or enter a repository URL.       |
-| Language Selection      | Generate content in a selected language.                    |
-| Custom Instructions     | Add key points and additional context.                      |
-| Document Preview        | View generated content in a formatted interface.            |
-| Markdown Export         | Download generated documents as Markdown files.             |
-| PDF Export              | Use the browser's print interface to save documents as PDF. |
-| HTML Templates          | Export documents using available visual templates.          |
-| User Authentication     | Sign up and sign in using Supabase authentication.          |
-| Generation History      | Access previously generated documents.                      |
-| Admin Dashboard         | View registered users and document-generation jobs.         |
+| Feature | Description |
+|---|---|
+| AI Document Generation | Generate structured documents using an AI model. |
+| Multiple Document Types | README, Resume, Report, Proposal and API Documentation. |
+| Multiple Input Methods | Enter text, upload files or provide a repository URL. |
+| Language Selection | Select a language for generated content. |
+| Custom Instructions | Add key points and additional context. |
+| Document Preview | Review generated content in the application. |
+| Markdown Export | Download generated documents as Markdown files. |
+| PDF Export | Use the browser's print interface to save documents as PDF. |
+| HTML Templates | Export using available document templates. |
+| User Authentication | Sign up and sign in through Supabase authentication. |
+| Generation History | Access previous document-generation jobs. |
+| Admin Dashboard | View user and document-generation information. |
+
+**Important implementation note:** Repository URL input is supported in the current prototype, but it does not yet clone or inspect the repository's actual source code. Genuine source-code analysis is a planned future capability.
 
 ## ⚙️ How It Works
 
-The current prototype follows this general workflow:
+The current prototype follows this workflow:
 
-1. **Provide Input** — Enter a topic, upload project files or provide a repository URL.
-2. **Choose Document Type** — Select the type of document to generate.
-3. **Customize** — Choose a language and provide additional instructions.
-4. **AI Processing** — The Supabase Edge Function sends the input to the Lovable AI Gateway.
-5. **Document Generation** — The AI model generates structured Markdown content.
-6. **Preview & Export** — Review the result and download it in an available format.
+1. **Provide Input** — Enter text, upload a file or provide a repository URL.
+2. **Select Document Type** — Choose the document you want to generate.
+3. **Customize** — Select a language and add additional instructions.
+4. **AI Processing** — The Supabase Edge Function sends the request to the Lovable AI Gateway.
+5. **Generate** — The AI model produces structured Markdown content.
+6. **Preview & Export** — Review the generated document and use the available export options.
 
-## 🧠 Product Vision
+## 🧠 Future Product Vision
 
-The broader startup vision goes beyond basic document generation.
+The long-term vision is to develop AutoDoc AI into a more advanced documentation platform.
 
 Potential future capabilities include:
 
-- Automated source-code analysis using Abstract Syntax Trees (AST).
+- Actual GitHub repository ingestion and source-code analysis.
+- Abstract Syntax Tree (AST) parsing.
 - Dependency and architecture graph generation.
 - Context-aware codebase question answering.
 - Retrieval-Augmented Generation (RAG).
-- Automatic API documentation.
+- Automated API documentation.
 - Documentation version comparison.
 - GitHub integration and repository synchronization.
 - Automated documentation updates through CI/CD.
 - Hosted documentation websites.
 
-These represent the proposed product direction and are not all implemented in the current prototype.
+These are proposed capabilities, not claims about the current implementation.
 
 ## 🛠️ Technology Stack
 
-| Technology              | Purpose                              |
-| ----------------------- | ------------------------------------ |
-| React                   | Frontend application                 |
-| TypeScript              | Type-safe development                |
-| Vite                    | Development server and build tooling |
-| Tailwind CSS            | Styling and responsive layouts       |
-| shadcn/ui & Radix UI    | Interface components                 |
-| Framer Motion           | UI animations                        |
-| Lucide React            | Icons                                |
-| Supabase                | Authentication and database services |
+| Technology | Purpose |
+|---|---|
+| React | Frontend application |
+| TypeScript | Application development |
+| Vite | Development server and build tooling |
+| Tailwind CSS | Styling and responsive layouts |
+| shadcn/ui | UI components |
+| Radix UI | Accessible interface primitives |
+| Framer Motion | UI animations |
+| Lucide React | Icons |
+| Supabase | Authentication and database services |
 | Supabase Edge Functions | Backend document-generation workflow |
-| Lovable AI Gateway      | AI model access                      |
-| Gemini 3 Flash Preview  | Document generation model            |
-| GitHub                  | Source-code hosting                  |
-| Lovable                 | AI-assisted application development  |
+| Lovable AI Gateway | AI model access |
+| Gemini 3 Flash Preview | Document generation model |
+| GitHub | Source-code hosting |
+| Lovable | AI-assisted application development |
 
 ## 🏗️ Application Architecture
 
-The current application uses a frontend-and-backend-service architecture.
+The current application uses a React frontend connected to Supabase services and an AI gateway.
 
 ```mermaid
 flowchart TD
@@ -149,7 +163,7 @@ AutoDoc-AI/
 
 - Node.js
 - npm
-- A Supabase project with the required configuration
+- A configured Supabase project
 
 ### 1. Clone the repository
 
@@ -157,7 +171,7 @@ AutoDoc-AI/
 git clone https://github.com/Muneeb-PT/AutoDoc-AI.git
 ```
 
-### 2. Navigate to the project
+### 2. Navigate to the project directory
 
 ```bash
 cd AutoDoc-AI
@@ -178,9 +192,9 @@ VITE_SUPABASE_URL=your_supabase_project_url
 VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_publishable_key
 ```
 
-The backend Edge Function also requires the appropriate Supabase configuration and a `LOVABLE_API_KEY` secret.
+The Supabase Edge Function also requires the `LOVABLE_API_KEY` secret to access the AI Gateway.
 
-Never commit private API keys, service-role keys or other secrets to GitHub.
+Keep private API keys and service-role credentials out of your repository.
 
 ### 5. Start the development server
 
@@ -198,65 +212,67 @@ npm run build
 
 ## 🎓 Academic Background
 
-| Detail       | Information                                    |
-| ------------ | ---------------------------------------------- |
-| Project      | AutoDoc AI                                     |
-| Project Type | Mini Project / Startup Idea                    |
-| Semester     | S1                                             |
-| Programme    | B.Tech Computer Science and Engineering        |
-| Subject      | Engineering Entrepreneurship and IPR           |
-| Institution  | KMEA Engineering College                       |
-| University   | APJ Abdul Kalam Technological University (KTU) |
+| Detail | Information |
+|---|---|
+| Project | AutoDoc AI |
+| Project Type | Mini Project / Startup Idea |
+| Semester | S1 |
+| Programme | B.Tech Computer Science and Engineering |
+| Subject | Engineering Entrepreneurship and IPR |
+| Institution | KMEA Engineering College |
+| University | APJ Abdul Kalam Technological University (KTU) |
 
-**Academic Focus:** Identifying a real-world problem, developing a startup concept, exploring its potential value proposition and presenting the idea through a software prototype.
+**Academic Objective:** Identify a real-world problem, develop a startup concept, explore its potential value proposition and demonstrate the idea through a software prototype.
 
 ## 🤖 Development Approach & AI Assistance
 
 This project was developed using **Lovable AI** as the primary AI-assisted development platform.
 
-At the time of this project, my programming knowledge was limited. Since the academic focus was primarily on the startup idea, its potential application and entrepreneurial aspects, I used Lovable to accelerate the development of a working prototype.
+At the time, my programming knowledge was limited. Since the academic subject focused mainly on entrepreneurship, the startup idea and its potential application, I used Lovable to accelerate the creation of a working prototype.
 
-The development process helped me explore:
+This experience introduced me to:
 
-- Converting a startup idea into a digital product concept.
-- Understanding frontend and backend application architecture.
-- Exploring AI integration in software applications.
+- Turning a startup idea into a digital product concept.
+- Exploring frontend and backend application architecture.
+- Integrating AI into a web application.
 - Understanding authentication and database-backed workflows.
-- Evaluating how AI-assisted development can support rapid prototyping.
+- Using AI-assisted tools for rapid prototyping.
 
-The implementation should be understood as an AI-assisted prototype rather than a fully independently programmed or production-ready commercial platform.
+This is an AI-assisted academic prototype, not a claim of independently developing a complete production-ready commercial platform.
 
 ## 🔭 Future Scope
 
-The long-term goal is to evolve AutoDoc AI into a more capable documentation platform.
+Possible future development directions include:
 
-Possible development directions include:
-
-- Real GitHub repository ingestion and source-code parsing.
+- Real GitHub repository cloning and source-code parsing.
 - Multi-language code analysis.
 - AI-powered architecture discovery.
-- More accurate documentation grounded in actual source code.
-- Advanced document templates and customization.
+- Documentation generated from actual source code.
+- More advanced templates and customization.
 - Team collaboration and workspace management.
 - Subscription and payment integration.
-- Enterprise deployment options.
+- Production deployment and scalability improvements.
 
 ## 📌 Project Status
 
 **Academic Startup Prototype — Developed**
 
-The current application demonstrates the core concept of AI-assisted document generation. Advanced code-intelligence capabilities and commercial features remain part of the proposed future scope.
+The current application demonstrates the concept of AI-assisted document generation. Advanced code-intelligence and commercial capabilities remain part of the future scope.
 
 ## 👨‍💻 Creator
 
 **Mohammed Muneeb PT**
 
-B.Tech Computer Science and Engineering
+B.Tech Computer Science and Engineering  
 KMEA Engineering College, Kerala, India
 
-- **GitHub:** [@Muneeb-PT](https://github.com/Muneeb-PT)
-- **LinkedIn:** [Mohammed Muneeb PT](https://linkedin.com/in/mohammed-muneeb-pt)
+- GitHub: [@Muneeb-PT](https://github.com/Muneeb-PT)
+- LinkedIn: [Mohammed Muneeb PT](https://linkedin.com/in/mohammed-muneeb-pt)
 
 ---
 
-\<p align="center">   \<strong>AutoDoc AI — Code to Clarity.\</strong>   \<br>   Turning documentation into a simpler process. \</p>
+<p align="center">
+  <strong>AutoDoc AI — Code to Clarity.</strong>
+  <br>
+  Turning documentation into a simpler process.
+</p>
