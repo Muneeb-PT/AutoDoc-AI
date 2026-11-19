@@ -1,179 +1,262 @@
-# 📄 AutoDoc-AI
+# 📄 AutoDoc AI — Code to Clarity
 
-> **[Insert a 1-sentence catchy pitch, e.g., Next-Generation Automated Documentation Powered by AI]**
+> **Turn ideas, code and information into structured documentation with AI.**
 
-[![Built with Lovable](https://img.shields.io/badge/Built_with-Lovable.ai-blue?style=for-the-badge)](https://lovable.dev/)
-[![Course](https://img.shields.io/badge/Course-Engineering_Entrepreneurs_&_IPR-success?style=for-the-badge)](#)
-[![Status](https://img.shields.io/badge/Status-Prototype-orange?style=for-the-badge)](#)
+AutoDoc AI is an AI-powered document generation platform developed around a startup idea: simplifying the process of creating technical and professional documents through artificial intelligence.
 
-AutoDoc-AI is a startup concept and minimum viable product (MVP) developed to streamline and automate [mention what it documents, e.g., medical records, coding documentation, business reports]. 
+The project explores how AI can reduce the time and effort involved in documentation by transforming user-provided information, project files and repository references into structured documents.
 
-This project was developed as part of the **Engineering Entrepreneurs and IPR** curriculum to explore not just technical implementation, but product-market fit, business viability, and intellectual property considerations.
+\<p align="center">   \<a href="[https://autodoc-ai.lovable.app](https://autodoc-ai.lovable.app)">     \<img src="[https://img.shields.io/badge/Live%20Demo-AutoDoc%20AI-8B5CF6?style=for-the-badge](https://img.shields.io/badge/Live%20Demo-AutoDoc%20AI-8B5CF6?style=for-the-badge)" alt="Live Demo">   \</a>   \<img src="[https://img.shields.io/badge/Project-Startup%20Prototype-blue?style=for-the-badge](https://img.shields.io/badge/Project-Startup%20Prototype-blue?style=for-the-badge)" alt="Startup Prototype">   \<img src="[https://img.shields.io/badge/AI%20Assisted-Lovable-4169E1?style=for-the-badge](https://img.shields.io/badge/AI%20Assisted-Lovable-4169E1?style=for-the-badge)" alt="AI Assisted"> \</p>
 
----
-
-## 🚀 The Problem & Solution
-
-**The Problem:** 
-[Describe the pain point in 1-2 sentences. E.g., Professionals spend 30% of their time formatting and generating routine documents, leading to lost productivity and human error.]
-
-**The Solution:** 
-AutoDoc-AI leverages artificial intelligence to [explain how it solves the problem, e.g., instantly generate perfectly formatted reports from raw data inputs], saving time and standardizing outputs.
+\<p align="center">   \<a href="[https://github.com/Muneeb-PT/AutoDoc-AI](https://github.com/Muneeb-PT/AutoDoc-AI)">GitHub Repository\</a> ·   \<a href="[https://autodoc-ai.lovable.app](https://autodoc-ai.lovable.app)">Live Application\</a> ·   \<a href="[https://lovable.dev/projects/53c0d838-3711-4647-99d6-cc0f6677f500](https://lovable.dev/projects/53c0d838-3711-4647-99d6-cc0f6677f500)">Lovable Project\</a> \</p>
 
 ---
 
-## ✨ Key Features
-* **🤖 AI-Powered Generation:** [Briefly describe the core AI feature].
-* **⚡ Rapid Prototyping:** UI and core logic accelerated using [Lovable.ai](https://lovable.dev/).
-* **📊 Export & Integration:** [Mention if it exports to PDF, Word, etc.].
-* **🔒 IPR Compliant:** Designed with data privacy and intellectual property standards in mind.
+## 💡 The Startup Idea
 
----
+Documentation is an essential part of software development, business operations and professional communication. However, creating well-structured documentation can be repetitive, time-consuming and difficult for individuals who are not experienced in technical writing.
 
-## 🛠 Tech Stack
-* **Frontend/UI Generation:** Lovable.ai
-* **Framework:** [e.g., React, Next.js, or HTML/CSS]
-* **AI/Backend:** [e.g., OpenAI API, Node.js]
+**AutoDoc AI aims to make document creation faster and more accessible through AI.**
 
----
+The long-term idea is to develop a platform that understands project structure and user-provided information, then generates useful, organized and customizable documentation.
+
+The concept is intended to serve developers, students, startups, software teams and professionals.
+
+## 🎯 Problem & Proposed Solution
+
+### The Problem
+
+- Writing project documentation takes time.
+- Maintaining consistent documentation across projects can be difficult.
+- Beginners may struggle to structure technical documents.
+- Different professional documents require different formats and writing styles.
+
+### The Proposed Solution
+
+AutoDoc AI provides an interface where users can supply information through text, files or repository references and request AI-generated documents.
+
+The platform aims to make documentation creation more accessible, customizable and efficient.
+
+## ✨ Current Prototype Features
+
+| Feature                 | Description                                                 |
+| ----------------------- | ----------------------------------------------------------- |
+| AI Document Generation  | Generate structured documents using an AI model.            |
+| Multiple Document Types | README, Resume, Report, Proposal and API Documentation.     |
+| Multiple Input Methods  | Provide text, upload files or enter a repository URL.       |
+| Language Selection      | Generate content in a selected language.                    |
+| Custom Instructions     | Add key points and additional context.                      |
+| Document Preview        | View generated content in a formatted interface.            |
+| Markdown Export         | Download generated documents as Markdown files.             |
+| PDF Export              | Use the browser's print interface to save documents as PDF. |
+| HTML Templates          | Export documents using available visual templates.          |
+| User Authentication     | Sign up and sign in using Supabase authentication.          |
+| Generation History      | Access previously generated documents.                      |
+| Admin Dashboard         | View registered users and document-generation jobs.         |
+
+## ⚙️ How It Works
+
+The current prototype follows this general workflow:
+
+1. **Provide Input** — Enter a topic, upload project files or provide a repository URL.
+2. **Choose Document Type** — Select the type of document to generate.
+3. **Customize** — Choose a language and provide additional instructions.
+4. **AI Processing** — The Supabase Edge Function sends the input to the Lovable AI Gateway.
+5. **Document Generation** — The AI model generates structured Markdown content.
+6. **Preview & Export** — Review the result and download it in an available format.
+
+## 🧠 Product Vision
+
+The broader startup vision goes beyond basic document generation.
+
+Potential future capabilities include:
+
+- Automated source-code analysis using Abstract Syntax Trees (AST).
+- Dependency and architecture graph generation.
+- Context-aware codebase question answering.
+- Retrieval-Augmented Generation (RAG).
+- Automatic API documentation.
+- Documentation version comparison.
+- GitHub integration and repository synchronization.
+- Automated documentation updates through CI/CD.
+- Hosted documentation websites.
+
+These represent the proposed product direction and are not all implemented in the current prototype.
+
+## 🛠️ Technology Stack
+
+| Technology              | Purpose                              |
+| ----------------------- | ------------------------------------ |
+| React                   | Frontend application                 |
+| TypeScript              | Type-safe development                |
+| Vite                    | Development server and build tooling |
+| Tailwind CSS            | Styling and responsive layouts       |
+| shadcn/ui & Radix UI    | Interface components                 |
+| Framer Motion           | UI animations                        |
+| Lucide React            | Icons                                |
+| Supabase                | Authentication and database services |
+| Supabase Edge Functions | Backend document-generation workflow |
+| Lovable AI Gateway      | AI model access                      |
+| Gemini 3 Flash Preview  | Document generation model            |
+| GitHub                  | Source-code hosting                  |
+| Lovable                 | AI-assisted application development  |
+
+## 🏗️ Application Architecture
+
+The current application uses a frontend-and-backend-service architecture.
+
+```mermaid
+flowchart TD
+    A[User] --> B[React Frontend]
+    B --> C[Supabase Authentication]
+    B --> D[Input and Document Selection]
+    D --> E[Supabase Edge Function]
+    E --> F[Lovable AI Gateway]
+    F --> G[Gemini AI Model]
+    G --> H[Generated Markdown]
+    H --> I[Supabase Database]
+    H --> J[Preview and Export]
+    I --> K[Generation History]
+```
 
 ## 📂 Project Structure
-To maintain a professional standard, this repository contains both the technical prototype and our startup documentation:
 
 ```text
-📦 AutoDoc-AI
- ┣ 📂 src              # Source code generated via Lovable.ai
- ┣ 📂 docs             # Project reports, business plans, and IPR research
- ┣ 📂 presentation     # Pitch deck and presentation materials
- ┣ 📂 assets           # Screenshots, logos, and UI diagrams
- ┗ 📜 README.md        # Project overview
+AutoDoc-AI/
+├── public/
+├── src/
+│   ├── components/
+│   ├── hooks/
+│   ├── integrations/
+│   │   └── supabase/
+│   ├── pages/
+│   ├── App.tsx
+│   └── main.tsx
+├── supabase/
+│   ├── functions/
+│   │   └── analyze-repo/
+│   │       └── index.ts
+│   └── config.toml
+├── index.html
+├── package.json
+├── vite.config.ts
+└── README.md
+```
 
+## 🚀 Run Locally
 
+### Prerequisites
 
+- Node.js
+- npm
+- A Supabase project with the required configuration
 
-# AutoDoc AI: Code to Clarity
+### 1. Clone the repository
 
-website for AI Documentation Genarater Tool (AotoDoc AI) a 100million startup idea web site must be premium+,pro, world class multipurpose and other would class suggestions this is just my suggestion or i try to make with limited knowledge {MAKE MY PROJECT FULLLY FUCTIONAL BACKEND AND FRIENDED, READY TO LOUNGE,PREMUM+,PRO+ C:\Users\MOHAMMED MUNEEB PT\OneDrive\Desktop\Works & Mattirals\html\AutoDoc AI(__pycache__,code_analyzer,venv ) CODES IN AUTODOC AI :# ai_engine.py from langchain_openai import ChatOpenAI from langchain_core.prompts import ChatPromptTemplate from langchain_core.messages import SystemMessage class CodeGraphAnalyzer: def __init__(self, repo_path): # <-- Fixed # celery_app.py from celery import Celery celery_app = Celery( "autodoc_ai", broker="redis://localhost:6379/0", backend="redis://localhost:6379/0" ) celery_app.conf.task_routes = { "tasks.analyze_repo_task": {"queue": "celery"}, } # Import tasks so Celery registers them <-- This must be commented! import tasks self.repo_path = repo_path def generate_readme(self) -> str: prompt = ChatPromptTemplate.from_messages([ ("system", "You are a Senior Software Architect. Use the provided Code AST metadata to write a world-class README.md."), ("user", "Project Structure: {context}\n\nProvide: 1. Overview 2. Architecture 3. API Reference 4. Mermaid.js Flowchart") ]) chain = prompt | self.llm response = chain.invoke({"context": self.code_context}) return response.content # analyzer.py import ast import os class CodeGraphAnalyzer: def __init__(self, repo_path): # <-- Fixed self.repo_path = repo_path def get_full_analysis(self): analysis = [] for root, _, files in os.walk(self.repo_path): for file in files: if file.endswith(".py"): analysis.append(self._parse_file(os.path.join(root, file))) return analysis def _parse_file(self, path): with open(path, "r") as f: tree = ast.parse(f.read()) return { "filename": os.path.basename(path), "classes": [n.name for n in tree.body if isinstance(n, ast.ClassDef)], "functions": [ {"name": n.name, "args": [a.arg for a in n.args.args]} for n in tree.body if isinstance(n, ast.FunctionDef) ], "imports": [n.names[0].name for n in tree.body if isinstance(n, ast.Import)] } # doc_generator.py class CodeGraphAnalyzer: def __init__(self, repo_path): # <-- Fixed self.repo_path = repo_path def generate_readme(self): # For now, just return a simple string return "# Auto-generated README\n\n" + str(self.code_data) <--index.html-->
+```bash
+git clone https://github.com/Muneeb-PT/AutoDoc-AI.git
+```
 
-AutoDocAI
+### 2. Navigate to the project
 
-Demo Architecture Pricing
+```bash
+cd AutoDoc-AI
+```
 
- Connect GitHub
+### 3. Install dependencies
 
- AutoDoc AI Core v2.0 is Live
+```bash
+npm install
+```
 
-Ship software.
-We'll write the docs.
+### 4. Configure environment variables
 
-The world's first AI-native documentation engine. Connect your repository and generate READMEs, API references, and system architecture diagrams instantly.
+Create a `.env` file in the project root:
 
-Generate Docs
+```env
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_publishable_key
+```
 
-~/projects/autodoc $ autodoc analyze init
+The backend Edge Function also requires the appropriate Supabase configuration and a `LOVABLE_API_KEY` secret.
 
+Never commit private API keys, service-role keys or other secrets to GitHub.
 
-Built with enterprise-grade infrastructure
+### 5. Start the development server
 
-How AutoDoc AI Works
-
-A robust, scalable pipeline transforming raw code into structured knowledge.
-
-1. Repo Ingestion
-
-2. AST Parsing
-
-3. Vector Embeddings
-
-4. RAG + LLM
-
-5. Docs Output
-
-Simple, transparent pricing
-
-Start for free, upgrade when you need scale.
-
-Hobby
-
-$0/mo
-
- 1 GitHub Repository
-
- Basic README Generation
-
- Community Support
-
-Get Started
-
-MOST POPULAR
-
-Pro
-
-$15/mo
-
- Unlimited Private Repos
-
- Full API & Arch Docs
-
- CI/CD Webhook Sync
-
- Priority Email Support
-
-Upgrade to Pro
-
-Enterprise
-
-Custom
-
- SOC2 Compliance
-
- Private VPC Deployment
-
- Custom Fine-Tuned Models
-
- Dedicated Success Manager
-
-Contact Sales
-
-AutoDocAI
-
-Automating software documentation for modern engineering teams worldwide.
-
-Product
-
-Features Integrations Pricing Changelog
-
-Resources
-
-Documentation API Reference Blog Community
-
-Company
-
-About Careers Privacy Policy Terms of Service
-
-© 2026 AutoDoc AI. Developed by Mohammed Muneeb PT.
-
- # main.py from fastapi import FastAPI from fastapi import WebSocket, WebSocketDisconnect from pydantic import BaseModel from celery.result import AsyncResult from celery_app import celery_app from tasks import analyze_repo_task import uuid app = FastAPI() class AnalyzeRequest(BaseModel): repo_url: str @app.post("/analyze") def analyze(request: AnalyzeRequest): task_id = str(uuid.uuid4()) # Sending both repo_url and task_id to the Celery worker analyze_repo_task.delay(request.repo_url, task_id) return { "task_id": task_id, "status": "Accepted", "message": "Analysis started." } @app.get("/status/{task_id}") def get_task_status(task_id: str): task_result = AsyncResult(task_id, app=celery_app) return { "task_id": task_id, "status": task_result.status, "result": task_result.result } # Keep your existing /analyze and /status endpoints @app.websocket("/ws/{task_id}") async def websocket_endpoint(websocket: WebSocket, task_id: str): await websocket.accept() try: # In a full setup, you would listen to a Redis channel here # For now, let's send a confirmation await websocket.send_text(f"[*] Connection established for Task: {task_id}") # Here you would implement logic to stream logs from Redis # while the Celery task is running. except WebSocketDisconnect: print(f"Client disconnected from task {task_id}") REQUIREMENT.TXT annotated-doc==0.0.4 annotated-types==0.7.0 anyio==4.12.1 fastapi==0.135.1 gitdb==4.0.12 GitPython==3.1.46 idna==3.11 pydantic==2.12.5 pydantic_core==2.41.5 smmap==5.0.3 starlette==0.52.1 typing-inspection==0.4.2 typing_extensions==4.15.0 unicorn==2.1.4 fastapi>=0.100.0 uvicorn>=0.23.0 celery>=5.3.0 redis>=5.0.0 pydantic>=2.0.0 GitPython>=3.1.0 langchain-openai>=0.0.8 langchain-core>=0.1.23 # schemas.py from pydantic import BaseModel class RepoRequest(BaseModel): repo_url: str class TaskStatus(BaseModel): task_id: str status: str message: str # tasks.py import os import shutil import git import redis from celery_app import celery_app from analyzer import CodeGraphAnalyzer # <-- Fixed import path from doc_generator import DocGenerator @celery_app.task(name="analyze_repo_task") def analyze_repo_task(repo_url: str, task_id: str): # <-- Accept task_id from FastAPI """ Analyze a repository and generate README documentation. """ local_path = os.path.join("./temp", task_id) os.makedirs(local_path, exist_ok=True) try: git.Repo.clone_from(repo_url, local_path) analyzer = CodeGraphAnalyzer(local_path) code_data = analyzer.get_full_analysis() # Make sure DocGenerator's __init__ matches what you pass here generator = DocGenerator(code_data) readme_content = generator.generate_readme() os.makedirs("./output", exist_ok=True) output_file = os.path.join("./output", f"{task_id}.md") with open(output_file, "w", encoding="utf-8") as f: f.write(readme_content) return { "task_id": task_id, "output_file": output_file, "message": "Analysis completed successfully" } finally: if os.path.exists(local_path): shutil.rmtree(local_path) r = redis.Redis(host='localhost', port=6379, db=1) @celery_app.task(bind=True) def analyze_repo_task(self, repo_url: str, task_id: str): r.rpush(task_id, "Cloning repository...") # ... do cloning r.rpush(task_id, "Building AST...") # ... do analysis r.rpush(task_id, "Generating README...") # ... final step C:\Users\MOHAMMED MUNEEB PT\OneDrive\Desktop\Works & Mattirals\html\AutoDoc AI\code_analyzer __init__.py EMPTY # code_graph_analyzer.py class CodeGraphAnalyzer: def __init__(self, repo_path): self.repo_path = repo_path def get_full_analysis(self): # your logic here return {"files": [], "functions": [], "classes": []} }
-
-This project was built with [Lovable](https://lovable.dev).
-
-**Live app**: https://autodoc-ai.lovable.app
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/53c0d838-3711-4647-99d6-cc0f6677f500).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+```bash
 npm run dev
 ```
+
+Open the local URL displayed in your terminal.
+
+### 6. Build for production
+
+```bash
+npm run build
+```
+
+## 🎓 Academic Background
+
+| Detail       | Information                                    |
+| ------------ | ---------------------------------------------- |
+| Project      | AutoDoc AI                                     |
+| Project Type | Mini Project / Startup Idea                    |
+| Semester     | S1                                             |
+| Programme    | B.Tech Computer Science and Engineering        |
+| Subject      | Engineering Entrepreneurship and IPR           |
+| Institution  | KMEA Engineering College                       |
+| University   | APJ Abdul Kalam Technological University (KTU) |
+
+**Academic Focus:** Identifying a real-world problem, developing a startup concept, exploring its potential value proposition and presenting the idea through a software prototype.
+
+## 🤖 Development Approach & AI Assistance
+
+This project was developed using **Lovable AI** as the primary AI-assisted development platform.
+
+At the time of this project, my programming knowledge was limited. Since the academic focus was primarily on the startup idea, its potential application and entrepreneurial aspects, I used Lovable to accelerate the development of a working prototype.
+
+The development process helped me explore:
+
+- Converting a startup idea into a digital product concept.
+- Understanding frontend and backend application architecture.
+- Exploring AI integration in software applications.
+- Understanding authentication and database-backed workflows.
+- Evaluating how AI-assisted development can support rapid prototyping.
+
+The implementation should be understood as an AI-assisted prototype rather than a fully independently programmed or production-ready commercial platform.
+
+## 🔭 Future Scope
+
+The long-term goal is to evolve AutoDoc AI into a more capable documentation platform.
+
+Possible development directions include:
+
+- Real GitHub repository ingestion and source-code parsing.
+- Multi-language code analysis.
+- AI-powered architecture discovery.
+- More accurate documentation grounded in actual source code.
+- Advanced document templates and customization.
+- Team collaboration and workspace management.
+- Subscription and payment integration.
+- Enterprise deployment options.
+
+## 📌 Project Status
+
+**Academic Startup Prototype — Developed**
+
+The current application demonstrates the core concept of AI-assisted document generation. Advanced code-intelligence capabilities and commercial features remain part of the proposed future scope.
+
+## 👨‍💻 Creator
+
+**Mohammed Muneeb PT**
+
+B.Tech Computer Science and Engineering
+KMEA Engineering College, Kerala, India
+
+- **GitHub:** [@Muneeb-PT](https://github.com/Muneeb-PT)
+- **LinkedIn:** [Mohammed Muneeb PT](https://linkedin.com/in/mohammed-muneeb-pt)
+
+---
+
+\<p align="center">   \<strong>AutoDoc AI — Code to Clarity.\</strong>   \<br>   Turning documentation into a simpler process. \</p>
